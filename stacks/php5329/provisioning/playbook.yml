@@ -28,7 +28,7 @@
           name: libpng
 
     - name: App | Download customized build PHP
-      command: /usr/bin/wget -O {{ item.dest }} {{ item.src }}
+      get_url: url={{ item.src }} dest={{ item.dest }}
       with_items:
         -
           src: https://googledrive.com/host/0B3GvHk47TiJAeEp1cm1VSWgtRWs/php53-1.0-1.x86_64.rpm

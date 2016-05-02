@@ -41,6 +41,23 @@ function copy_php_ini() {
   echo "Done"
 }
 
+function copy_phpinfo() {
+  echo "Copying phpinfo.php"
+  local src_path='provisioning/test/phpinfo.php'
+  local target_path='/var/www/html/phpinfo.php'
+
+  sudo cp ${src_path} ${target_path}
+  echo "Done"
+}
+
+function remove_welcome_conf() {
+  echo "Removing /etc/httpd/conf.d/welcome.conf"
+  local target_path='/etc/httpd/conf.d/welcome.conf'
+
+  sudo rm -f ${target_path}
+  echo "Done"
+}
+
 function reload_httpd() {
   echo "Restarting httpd service"
   sudo service httpd restart
@@ -55,11 +72,13 @@ function start_mysql_server() {
 
 function main() {
   cd /vagrant
-  
+
   install_builtin_rpm
   install_customized_php
   copy_httpd_conf
   copy_php_ini
+  copy_phpinfo
+  remove_welcome_conf
   reload_httpd
   start_mysql_server
 }

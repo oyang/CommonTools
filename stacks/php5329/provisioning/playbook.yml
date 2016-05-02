@@ -1,0 +1,65 @@
+---
+- hosts: all
+  vars:
+    - destination: /home/vagrant
+  tasks:
+    - name: App | Install vim and unzip
+      yum: name={{ item.name }} state=latest
+      with_items:
+        -
+          name: vim
+        -
+          name: unzip
+
+    - name: App | Install Apache2 and Mysql server
+      package: name={{ item.name }} state=latest
+      with_items:
+        -
+          name: httpd
+        -
+          name: mysql-server
+
+    - name: App | Install PHP runtime dependencies
+      package: name={{ item.name }} state=latest
+      with_items:
+        -
+          name: libc-client-devel
+        -
+          name: libpng
+
+    - name: App | Download customized build PHP
+      command: /usr/bin/wget -O {{ item.dest }} {{ item.src }}
+      with_items:
+        -
+          src: https://googledrive.com/host/0B3GvHk47TiJAeEp1cm1VSWgtRWs/php53-1.0-1.x86_64.rpm
+          dest: /tmp/php5.3.29.rpm
+
+    - name: App | Install customized build PHP
+      yum: name=/tmp/php5.3.29.rpm state=present
+
+    - name: App | Attach httpd.conf into /etc/httpd/conf/
+      copy: src={{ item.src }} dest={{ item.dest }}
+      with_items:
+        -
+          src: "httpd/httpd.conf"
+          dest: "/etc/httpd/conf/httpd.conf"
+
+    - name: App | Attach php.ini into /usr/local/lib/
+      copy: src={{ item.src }} dest={{ item.dest }}
+      with_items:
+        -
+          src: "php/php.ini"
+          dest: "/usr/local/lib/php.ini"
+
+    - name: App | Attach phpinfo.php into /var/www/html
+      copy: src={{ item.src }} dest={{ item.dest  }}
+      with_items:
+        -
+          src: "test/phpinfo.php"
+          dest: "/var/www/html/phpinfo.php"
+
+    - name: App | Rstart httpd service
+      service: name=httpd state=reloaded
+
+    - name: App | Start mysqld service
+      service: name=mysqld state=started

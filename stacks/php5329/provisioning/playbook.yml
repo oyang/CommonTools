@@ -44,6 +44,9 @@
           src: "httpd/httpd.conf"
           dest: "/etc/httpd/conf/httpd.conf"
 
+    - name: App | Remov welcome.conf from /etc/httpd/conf.d/welcome.conf
+      file: path=/etc/httpd/conf.d/welcome.conf state=absent
+
     - name: App | Attach php.ini into /usr/local/lib/
       copy: src={{ item.src }} dest={{ item.dest }}
       with_items:

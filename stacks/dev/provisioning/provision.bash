@@ -25,8 +25,16 @@ function install_builtin_rpm() {
 }
 
 function link_autoconf() {
-  sudo ln -s /usr/bin/autoconf-2.13 /usr/bin/autoconf
-  sudo ln -s /usr/bin/autoheader-2.13 /usr/bin/autoheader
+  echo "Linking autoconf213"
+  
+  if [ ! -f /usr/bin/autoconf ]; then
+    sudo ln -s /usr/bin/autoconf-2.13 /usr/bin/autoconf
+  fi
+  if [ ! -f /usr/bin/autoheader ]; then
+    sudo ln -s /usr/bin/autoheader-2.13 /usr/bin/autoheader
+  fi
+
+  echo "Done"
 }
 
 function remove_welcome_conf() {

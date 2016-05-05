@@ -32,7 +32,7 @@ function install_customized_php() {
   local target_path="/tmp/php5.3.29.rpm"
   rm -rf "${target_path}"
 
-  wget -O ${target_path} ${src_path} >/dev/null 2>&1
+  wget -q -O ${target_path} ${src_path}
 
   sudo rpm -i ${target_path}
   rm -rf "${target_path}"
@@ -97,7 +97,7 @@ function install_phpmyadmin() {
 
   rm -rf "${phpmyadmin_zip}"
   sudo rm -rf "${phpmyadmin_target}"
-  wget -O ${phpmyadmin_zip} ${phpmyadmin_source_link} >/dev/null
+  wget -q -O ${phpmyadmin_zip} ${phpmyadmin_source_link} >/dev/null
   sudo tar xzf ${phpmyadmin_zip} -C /tmp
   sudo mv "/tmp/${phpmyadmin_extract_name}" "${phpmyadmin_target}"
   sudo cp ${phpmyadmin_config} ${phpmyadmin_target}

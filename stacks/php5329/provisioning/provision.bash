@@ -1,4 +1,6 @@
 #!/bin/bash
+DOCUMENT_ROOT='/var/www'
+
 function remove_packages() {
   while [ -n "$1" ]; do
     if yum -q list installed $1 >/dev/null 2>&1; then
@@ -77,7 +79,7 @@ function copy_php_ini() {
 function copy_phpinfo() {
   echo "Copying phpinfo.php"
   local src_path="provisioning/test/phpinfo.php"
-  local target_path="/var/www/html/phpinfo.php"
+  local target_path="${DOCUMENT_ROOT}/html/phpinfo.php"
 
   cp ${src_path} ${target_path}
   echo "Done"
@@ -110,7 +112,7 @@ function install_phpmyadmin() {
   local phpmyadmin_zip="/tmp/phpmyadmin.tgz"
   local phpmyadmin_extract_name="phpMyAdmin-4.0.10.15-all-languages"
   local phpmyadmin_config="provisioning/phpmyadmin/config.inc.php"
-  local phpmyadmin_target="/var/www/html/phpmyadmin"
+  local phpmyadmin_target="${DOCUMENT_ROOT}/html/phpmyadmin"
 
   rm -rf "${phpmyadmin_zip}"
   rm -rf "${phpmyadmin_target}"

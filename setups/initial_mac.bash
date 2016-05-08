@@ -1,11 +1,8 @@
 #!/bin/bash
+CURRENT_DIR=$(dirname "${BASH_SOURCE[0]}")
+source "${CURRENT_DIR}/common.bash"
 
 BASH_IT="$HOME/.bash_it"
-RED='\033[0;31m'
-YELLOW='\033[1;33m'
-NC='\033[0m' # no color
-Warning="${YELLOW}Warning:${NC}"
-Error="${RED}Red:${NC}"
 
 # install homebrew first http://brew.sh/
 function install_brew() {

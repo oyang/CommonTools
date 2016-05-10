@@ -36,6 +36,7 @@ function install_rpm() {
   packages+=("httpd-devel")
   packages+=("xz-devel")
   packages+=("rpm-build")
+  packages+=("yum-utils")
 
   # Http server
   packages+=("httpd")

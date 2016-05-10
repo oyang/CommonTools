@@ -29,11 +29,13 @@ function install_rpm() {
   packages+=("apr-devel")
   packages+=("openssl-devel")
   packages+=("libcurl-devel")
+  packages+=("libmcrypt-devel")
   packages+=("gd-devel")
   packages+=("libc-client-devel")
   packages+=("openldap-devel")
   packages+=("httpd-devel")
   packages+=("xz-devel")
+  packages+=("rpm-build")
 
   # Http server
   packages+=("httpd")
@@ -50,8 +52,6 @@ function install_rpm() {
   pacakges+=("glibc-devel")
   pacakges+=("readline-devel")
   pacakges+=("libffi-devel")
-  pacakges+=("libtool")
-  pacakges+=("bison")
   pacakges+=("sqlite-devel")
 
   # Finally install all the packages
@@ -63,10 +63,12 @@ function install_rpm() {
 function link_autoconf() {
   echo "Linking autoconf213"
 
-  if [ ! -f /usr/bin/autoconf ]; then
+  if [ ! -L /usr/bin/autoconf ]; then
+    sudo mv /usr/bin/autoconf /usr/bin/auto-conf.old
     sudo ln -s /usr/bin/autoconf-2.13 /usr/bin/autoconf
   fi
-  if [ ! -f /usr/bin/autoheader ]; then
+  if [ ! -L /usr/bin/autoheader ]; then
+    sudo mv /usr/bin/autoheader /usr/bin/autoheader.old
     sudo ln -s /usr/bin/autoheader-2.13 /usr/bin/autoheader
   fi
 

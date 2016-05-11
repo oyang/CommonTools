@@ -11,8 +11,8 @@ function remove_packages() {
   done
 }
 
-function install_builtin_rpm() {
-  echo "Installing built-in dependencies"
+function install_required_packages() {
+  echo "Installing dependencies"
   # Import PGP key first
   rpm --import http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-6
 
@@ -189,9 +189,9 @@ function install_phpmyadmin() {
 function main() {
   cd /vagrant
 
-  install_builtin_rpm
   install_epel
   config_yum
+  install_required_packages
   install_mysql55
   install_customized_php
   copy_httpd_conf

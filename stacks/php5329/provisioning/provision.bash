@@ -186,6 +186,15 @@ function install_phpmyadmin() {
   echo "Done"
 }
 
+fucntion config_system_start() {
+  local services=(httpd mysqld)
+
+  for item in ${services[@]} ; do
+    chkconfig --add $item
+    chkconfig $item on
+  done
+}
+
 function main() {
   cd /vagrant
 
@@ -202,6 +211,7 @@ function main() {
   start_mysql_server
   mysql_secure_install
   install_phpmyadmin
+  config_system_start
 }
 
 main

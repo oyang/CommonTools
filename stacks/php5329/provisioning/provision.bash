@@ -4,8 +4,8 @@ MYSQL_PASSWORD='test'
 
 function remove_packages() {
   while [ -n "$1" ]; do
-    if yum -q list installed $1 >/dev/null 2>&1; then
-      yum -q remove -y $1 >/dev/null
+    if yum -q list installed "$1" >/dev/null 2>&1; then
+      yum -q remove -y "$1" >/dev/null
     fi
     shift
   done
@@ -42,8 +42,8 @@ function install_epel() {
 function config_yum() {
   echo "Configing yum repo"
   local target_path="/etc/yum.repos.d/"
-  for item in $(ls provisioning/yum) ; do
-    cp "provisioning/yum/$item" ${target_path}
+  for item in provisioning/yum/* ; do
+    cp "$item" ${target_path}
   done
   echo "Done"
 }
@@ -55,7 +55,7 @@ function install_mysql55() {
   to_remove+=("mysql-server")
   to_remove+=("mysql-libs")
 
-  remove_packages ${to_remove[@]}
+  remove_packages "${to_remove[@]}"
   yum install -y mysql-community-client mysql-community-server >/dev/null
   echo "Done"
 }
@@ -133,12 +133,12 @@ function start_mysql_server() {
 function mysql_secure_install() {
   local current_passwd=""
 
-  if mysql -uroot -p"${MYSQL_PASSWORD}" -e "select now();" 2>&1 >/dev/null ; then
+  if mysql -uroot -p"${MYSQL_PASSWORD}" -e "select now();" >/dev/null 2>&1 ; then
     echo "Ignored! Won't run mysql_secure_installation twice!"
     return 0
   fi
 
-  if ! mysql -uroot -e "select now();" 2>&1 >/dev/null ; then
+  if ! mysql -uroot -e "select now();" >/dev/null 2>&1 ; then
     echo "You updated the default MySQL password, can not run mysql_secure_installation!"
     return 1
   fi
@@ -186,17 +186,17 @@ function install_phpmyadmin() {
   echo "Done"
 }
 
-fucntion config_system_start() {
+function config_system_start() {
   local services=(httpd mysqld)
 
-  for item in ${services[@]} ; do
-    chkconfig --add $item
-    chkconfig $item on
+  for item in "${services[@]}" ; do
+    chkconfig --add "$item"
+    chkconfig "$item" on
   done
 }
 
 function main() {
-  cd /vagrant
+  cd /vagrant || exit
 
   install_epel
   config_yum

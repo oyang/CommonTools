@@ -164,6 +164,9 @@ function mysql_secure_install() {
   expect "Reload privilege tables now"
   send "Y\r"
 EOD
+  for item in .my.cnf.* .mysql.* ; do
+    rm -f $item
+  done
   echo "Done."
 }
 
